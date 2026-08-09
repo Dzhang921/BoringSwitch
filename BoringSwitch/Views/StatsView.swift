@@ -2,7 +2,6 @@ import SwiftUI
 
 struct StatsView: View {
     @EnvironmentObject private var clickStore: ClickStore
-    @EnvironmentObject private var premiumStore: PremiumStore
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -38,13 +37,7 @@ struct StatsView: View {
                 }
 
                 Section {
-                    if premiumStore.isPurchased {
-                        Label("Premium · yours forever", systemImage: "checkmark.seal.fill")
-                            .foregroundStyle(.secondary)
-                    } else {
-                        Label("Free version", systemImage: "lightswitch.off")
-                            .foregroundStyle(.secondary)
-                    }
+                    EmptyView()
                 } footer: {
                     Text("Every click is counted. None of them matter.")
                 }

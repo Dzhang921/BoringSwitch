@@ -4,9 +4,7 @@ struct CustomizeView: View {
     @Binding var styleRaw: String
     @Binding var materialRaw: String
     @Binding var colorwayRaw: String
-    @Binding var showPaywall: Bool
 
-    @EnvironmentObject private var premiumStore: PremiumStore
     @Environment(\.dismiss) private var dismiss
 
     private var style: SwitchStyle { SwitchStyle(rawValue: styleRaw) ?? .toggle }
@@ -31,8 +29,7 @@ struct CustomizeView: View {
 
                 Section("Style") {
                     ForEach(SwitchStyle.allCases) { option in
-                        optionRow(name: option.displayName, isFree: option.isFree,
-                                  isSelected: option == style) {
+                        optionRow(name: option.displayName, isSelected: option == style) {
                             styleRaw = option.rawValue
                         }
                     }
@@ -40,8 +37,7 @@ struct CustomizeView: View {
 
                 Section("Material") {
                     ForEach(SwitchMaterial.allCases) { option in
-                        optionRow(name: option.displayName, isFree: option.isFree,
-                                  isSelected: option == material) {
+                        optionRow(name: option.displayName, isSelected: option == material) {
                             materialRaw = option.rawValue
                         }
                     }
@@ -49,23 +45,10 @@ struct CustomizeView: View {
 
                 Section("Color") {
                     ForEach(Colorway.allCases) { option in
-                        optionRow(name: option.displayName, isFree: option.isFree,
-                                  isSelected: option == colorway,
+                        optionRow(name: option.displayName, isSelected: option == colorway,
                                   swatch: option.plateColor) {
                             colorwayRaw = option.rawValue
                         }
-                    }
-                }
-
-                if !premiumStore.isPurchased {
-                    Section {
-                        Button {
-                            showPaywall = true
-                            dismiss()
-                        } label: {
-                            Text("Unlock everything forever · \(premiumStore.priceText)")
-                        }
-                        .font(.subheadline.weight(.medium))
                     }
                 }
             }
@@ -80,17 +63,9 @@ struct CustomizeView: View {
     }
 
     @ViewBuilder
-    private func optionRow(name: String, isFree: Bool, isSelected: Bool,
+    private func optionRow(name: String, isSelected: Bool,
                            swatch: Color? = nil, select: @escaping () -> Void) -> some View {
-        let locked = !isFree && !premiumStore.isPremiumActive
-        Button {
-            if locked {
-                showPaywall = true
-                dismiss()
-            } else {
-                select()
-            }
-        } label: {
+        Button(action: select) {
             HStack {
                 if let swatch {
                     Circle()
@@ -99,13 +74,9 @@ struct CustomizeView: View {
                         .overlay(Circle().strokeBorder(.black.opacity(0.15), lineWidth: 1))
                 }
                 Text(name)
-                    .foregroundStyle(locked ? .secondary : .primary)
+                    .foregroundStyle(.primary)
                 Spacer()
-                if locked {
-                    Image(systemName: "lock.fill")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                } else if isSelected {
+                if isSelected {
                     Image(systemName: "checkmark")
                         .foregroundStyle(.tint)
                 }

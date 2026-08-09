@@ -2,7 +2,6 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject private var clickStore: ClickStore
-    @EnvironmentObject private var premiumStore: PremiumStore
 
     @AppStorage("isOn") private var isOn = false
     @AppStorage("switchStyle") private var styleRaw = SwitchStyle.toggle.rawValue
@@ -11,7 +10,6 @@ struct ContentView: View {
 
     @State private var showCustomize = false
     @State private var showStats = false
-    @State private var showPaywall = false
     @State private var milestoneMessage: String?
     @State private var milestoneTask: Task<Void, Never>?
     @State private var flickerDim = false
@@ -73,18 +71,9 @@ struct ContentView: View {
         .animation(.spring(response: 0.28, dampingFraction: 0.62), value: isOn)
         .sheet(isPresented: $showCustomize) {
             CustomizeView(styleRaw: $styleRaw, materialRaw: $materialRaw,
-                          colorwayRaw: $colorwayRaw, showPaywall: $showPaywall)
+                          colorwayRaw: $colorwayRaw)
         }
         .sheet(isPresented: $showStats) { StatsView() }
-        .sheet(isPresented: $showPaywall) { PaywallView() }
-        .onChange(of: premiumStore.isPremiumActive) { _, active in
-            // Trial expired: quietly fall back to the free configuration.
-            if !active {
-                if !style.isFree { styleRaw = SwitchStyle.toggle.rawValue }
-                if !material.isFree { materialRaw = SwitchMaterial.plastic.rawValue }
-                if !colorway.isFree { colorwayRaw = Colorway.white.rawValue }
-            }
-        }
     }
 
     private var counter: some View {

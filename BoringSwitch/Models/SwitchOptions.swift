@@ -14,8 +14,6 @@ enum SwitchStyle: String, CaseIterable, Identifiable {
         case .chain: return "Pull Chain"
         }
     }
-
-    var isFree: Bool { self == .toggle }
 }
 
 enum SwitchMaterial: String, CaseIterable, Identifiable {
@@ -31,8 +29,6 @@ enum SwitchMaterial: String, CaseIterable, Identifiable {
         case .wood: return "Wood"
         }
     }
-
-    var isFree: Bool { self == .plastic }
 
     /// Gradient used for the actuator (the moving part).
     var actuatorGradient: LinearGradient {
@@ -73,8 +69,6 @@ enum Colorway: String, CaseIterable, Identifiable {
         case .butter: return "Butter"
         }
     }
-
-    var isFree: Bool { self == .white || self == .charcoal }
 
     var plateColor: Color {
         switch self {
