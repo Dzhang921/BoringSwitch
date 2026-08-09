@@ -17,6 +17,24 @@ struct StatsView: View {
                     if let first = clickStore.firstClickDate {
                         statRow("Clicking since", first.formatted(date: .abbreviated, time: .omitted))
                     }
+                    if clickStore.rareEventsSeen > 0 {
+                        statRow("Strange occurrences", "\(clickStore.rareEventsSeen)")
+                    }
+                }
+
+                Section {
+                    ShareLink(
+                        item: CertificateView.renderImage(clicks: clickStore.lifetimeClicks,
+                                                          since: clickStore.firstClickDate),
+                        preview: SharePreview(
+                            "Certificate of Dedication",
+                            image: CertificateView.renderImage(clicks: clickStore.lifetimeClicks,
+                                                               since: clickStore.firstClickDate))
+                    ) {
+                        Label("Share Certificate of Dedication", systemImage: "rosette")
+                    }
+                } footer: {
+                    Text("Proof of your commitment, suitable for framing.")
                 }
 
                 Section {

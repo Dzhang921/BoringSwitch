@@ -1,17 +1,24 @@
 import Foundation
 import Combine
+import WidgetKit
 
 /// Tracks the lifetime click count and the small statistics that make
 /// pressing a light switch feel like an accomplishment.
+///
+/// Data lives in the app-group container so the home screen widget can
+/// read it too.
 @MainActor
 final class ClickStore: ObservableObject {
+    static let appGroupSuite = "group.com.boringswitch.app"
+
     @Published private(set) var lifetimeClicks: Int
     @Published private(set) var todayClicks: Int
     @Published private(set) var bestDayClicks: Int
     @Published private(set) var streakDays: Int
     @Published private(set) var firstClickDate: Date?
+    @Published private(set) var rareEventsSeen: Int
 
-    private let defaults = UserDefaults.standard
+    private let defaults: UserDefaults
     private var todayKey: String
     private var lastClickDay: Date?
 
@@ -28,15 +35,31 @@ final class ClickStore: ObservableObject {
     ]
 
     init() {
-        lifetimeClicks = defaults.integer(forKey: "lifetimeClicks")
-        bestDayClicks = defaults.integer(forKey: "bestDayClicks")
-        streakDays = defaults.integer(forKey: "streakDays")
-        firstClickDate = defaults.object(forKey: "firstClickDate") as? Date
-        lastClickDay = defaults.object(forKey: "lastClickDay") as? Date
+        let shared = UserDefaults(suiteName: Self.appGroupSuite) ?? .standard
+        defaults = shared
+
+        // One-time migration from the pre-widget standard container.
+        let standard = UserDefaults.standard
+        if shared.integer(forKey: "lifetimeClicks") == 0,
+           standard.integer(forKey: "lifetimeClicks") > 0 {
+            for key in ["lifetimeClicks", "bestDayClicks", "streakDays", "rareEventsSeen"] {
+                shared.set(standard.integer(forKey: key), forKey: key)
+            }
+            for key in ["firstClickDate", "lastClickDay"] {
+                shared.set(standard.object(forKey: key), forKey: key)
+            }
+        }
+
+        lifetimeClicks = shared.integer(forKey: "lifetimeClicks")
+        bestDayClicks = shared.integer(forKey: "bestDayClicks")
+        streakDays = shared.integer(forKey: "streakDays")
+        rareEventsSeen = shared.integer(forKey: "rareEventsSeen")
+        firstClickDate = shared.object(forKey: "firstClickDate") as? Date
+        lastClickDay = shared.object(forKey: "lastClickDay") as? Date
 
         let today = Calendar.current.startOfDay(for: Date())
         todayKey = "clicks-\(today.timeIntervalSince1970)"
-        todayClicks = defaults.integer(forKey: todayKey)
+        todayClicks = shared.integer(forKey: todayKey)
     }
 
     var averagePerDay: Int {
@@ -81,6 +104,15 @@ final class ClickStore: ObservableObject {
         defaults.set(streakDays, forKey: "streakDays")
         defaults.set(lastClickDay, forKey: "lastClickDay")
 
-        return Self.milestones[lifetimeClicks]
+        let milestone = Self.milestones[lifetimeClicks]
+        if milestone != nil {
+            WidgetCenter.shared.reloadTimelines(ofKind: "LifetimeClicks")
+        }
+        return milestone
+    }
+
+    func registerRareEvent() {
+        rareEventsSeen += 1
+        defaults.set(rareEventsSeen, forKey: "rareEventsSeen")
     }
 }

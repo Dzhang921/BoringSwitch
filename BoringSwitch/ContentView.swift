@@ -14,6 +14,8 @@ struct ContentView: View {
     @State private var showPaywall = false
     @State private var milestoneMessage: String?
     @State private var milestoneTask: Task<Void, Never>?
+    @State private var flickerDim = false
+    @State private var mothVisible = false
 
     private var style: SwitchStyle { SwitchStyle(rawValue: styleRaw) ?? .toggle }
     private var material: SwitchMaterial { SwitchMaterial(rawValue: materialRaw) ?? .plastic }
@@ -35,6 +37,17 @@ struct ContentView: View {
                 RadialGradient(colors: [Color.yellow.opacity(0.22), .clear],
                                center: .center, startRadius: 20, endRadius: 380)
                     .ignoresSafeArea()
+                    .transition(.opacity)
+            }
+
+            // Rare event: the light flickers
+            if flickerDim {
+                Color.black.opacity(0.82).ignoresSafeArea()
+            }
+
+            // Rare event: a moth found the light
+            if mothVisible {
+                MothView()
                     .transition(.opacity)
             }
 
@@ -119,6 +132,7 @@ struct ContentView: View {
     private func flip() {
         isOn.toggle()
         ClickSoundPlayer.shared.play(style: style, material: material, isOn: isOn)
+        maybeTriggerRareEvent()
 
         if let message = clickStore.registerClick() {
             milestoneTask?.cancel()
@@ -129,5 +143,61 @@ struct ContentView: View {
                 withAnimation { milestoneMessage = nil }
             }
         }
+    }
+
+    /// Occasionally, something almost happens. Discovered, never announced.
+    private func maybeTriggerRareEvent() {
+        guard isOn else { return }
+
+        let roll = Int.random(in: 1...1200)
+        if roll <= 3 {
+            // ~1 in 400: the light flickers before settling
+            clickStore.registerRareEvent()
+            Task {
+                for delay in [0.06, 0.09, 0.05, 0.12, 0.07] {
+                    flickerDim.toggle()
+                    try? await Task.sleep(for: .seconds(delay))
+                }
+                flickerDim = false
+            }
+        } else if roll == 4 {
+            // ~1 in 1200: a moth drops by
+            clickStore.registerRareEvent()
+            Task {
+                withAnimation(.easeIn(duration: 1.5)) { mothVisible = true }
+                try? await Task.sleep(for: .seconds(7))
+                withAnimation(.easeOut(duration: 1.5)) { mothVisible = false }
+            }
+        }
+    }
+}
+
+/// A small moth that wanders around the glow while the light is on.
+struct MothView: View {
+    var body: some View {
+        TimelineView(.animation) { context in
+            let t = context.date.timeIntervalSinceReferenceDate
+            let x = sin(t * 0.9) * 90 + sin(t * 2.3) * 28
+            let y = cos(t * 0.7) * 110 + sin(t * 1.7) * 22 - 120
+            let flap = sin(t * 26) * 32
+
+            ZStack {
+                Ellipse() // left wing
+                    .fill(Color(white: 0.55, opacity: 0.85))
+                    .frame(width: 10, height: 6)
+                    .rotationEffect(.degrees(-20 + flap), anchor: .trailing)
+                    .offset(x: -5)
+                Ellipse() // right wing
+                    .fill(Color(white: 0.55, opacity: 0.85))
+                    .frame(width: 10, height: 6)
+                    .rotationEffect(.degrees(20 - flap), anchor: .leading)
+                    .offset(x: 5)
+                Capsule() // body
+                    .fill(Color(white: 0.35))
+                    .frame(width: 3.5, height: 9)
+            }
+            .offset(x: x, y: y)
+        }
+        .allowsHitTesting(false)
     }
 }

@@ -6,16 +6,53 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B0000000000000000000101 /* BoringSwitchWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B0000000000000000000102 /* BoringSwitchWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B000000000000000000010A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B0000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B0000000000000000000104;
+			remoteInfo = BoringSwitchWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B000000000000000000010B /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B0000000000000000000101 /* BoringSwitchWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		B0000000000000000000004 /* BoringSwitch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BoringSwitch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B0000000000000000000102 /* BoringSwitchWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BoringSwitchWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B0000000000000000000009 /* BoringSwitch */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = BoringSwitch; sourceTree = "<group>"; };
+		B0000000000000000000103 /* BoringSwitchWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = BoringSwitchWidget; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B0000000000000000000007 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B0000000000000000000107 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -29,6 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				B0000000000000000000009 /* BoringSwitch */,
+				B0000000000000000000103 /* BoringSwitchWidget */,
 				B0000000000000000000003 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -37,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				B0000000000000000000004 /* BoringSwitch.app */,
+				B0000000000000000000102 /* BoringSwitchWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -51,10 +90,12 @@
 				B0000000000000000000006 /* Sources */,
 				B0000000000000000000007 /* Frameworks */,
 				B0000000000000000000008 /* Resources */,
+				B000000000000000000010B /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B0000000000000000000109 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				B0000000000000000000009 /* BoringSwitch */,
@@ -64,7 +105,35 @@
 			productReference = B0000000000000000000004 /* BoringSwitch.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B0000000000000000000104 /* BoringSwitchWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B0000000000000000000105 /* Build configuration list for PBXNativeTarget "BoringSwitchWidget" */;
+			buildPhases = (
+				B0000000000000000000106 /* Sources */,
+				B0000000000000000000107 /* Frameworks */,
+				B0000000000000000000108 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B0000000000000000000103 /* BoringSwitchWidget */,
+			);
+			name = BoringSwitchWidget;
+			productName = BoringSwitchWidget;
+			productReference = B0000000000000000000102 /* BoringSwitchWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
+
+/* Begin PBXTargetDependency section */
+		B0000000000000000000109 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B0000000000000000000104 /* BoringSwitchWidget */;
+			targetProxy = B000000000000000000010A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXProject section */
 		B0000000000000000000001 /* Project object */ = {
@@ -75,6 +144,9 @@
 				LastUpgradeCheck = 2660;
 				TargetAttributes = {
 					B0000000000000000000005 = {
+						CreatedOnToolsVersion = 26.6;
+					};
+					B0000000000000000000104 = {
 						CreatedOnToolsVersion = 26.6;
 					};
 				};
@@ -94,6 +166,7 @@
 			projectRoot = "";
 			targets = (
 				B0000000000000000000005 /* BoringSwitch */,
+				B0000000000000000000104 /* BoringSwitchWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -106,10 +179,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B0000000000000000000108 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B0000000000000000000006 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B0000000000000000000106 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -175,6 +262,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Config/BoringSwitch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LBVWATHXH4;
 				CURRENT_PROJECT_VERSION = 1;
@@ -204,6 +292,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Config/BoringSwitch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LBVWATHXH4;
 				CURRENT_PROJECT_VERSION = 1;
@@ -230,7 +319,70 @@
 		};
 /* End XCBuildConfiguration section */
 
+		B0000000000000000000110 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Config/Widget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LBVWATHXH4;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Config/WidgetInfo.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Boring Switch";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.boringswitch.app.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		B0000000000000000000111 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Config/Widget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LBVWATHXH4;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Config/WidgetInfo.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Boring Switch";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.boringswitch.app.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
 /* Begin XCConfigurationList section */
+		B0000000000000000000105 /* Build configuration list for PBXNativeTarget "BoringSwitchWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B0000000000000000000110 /* Debug */,
+				B0000000000000000000111 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B000000000000000000000A /* Build configuration list for PBXProject "BoringSwitch" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
