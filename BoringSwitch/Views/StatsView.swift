@@ -41,10 +41,6 @@ struct StatsView: View {
                     if premiumStore.isPurchased {
                         Label("Premium · yours forever", systemImage: "checkmark.seal.fill")
                             .foregroundStyle(.secondary)
-                    } else if premiumStore.isTrialActive {
-                        Label("Free trial · \(premiumStore.trialDaysRemaining) day\(premiumStore.trialDaysRemaining == 1 ? "" : "s") remaining",
-                              systemImage: "clock")
-                            .foregroundStyle(.secondary)
                     } else {
                         Label("Free version", systemImage: "lightswitch.off")
                             .foregroundStyle(.secondary)

@@ -1,12 +1,10 @@
 import Foundation
 import StoreKit
 
-/// Premium unlock: $1.99 lifetime non-consumable, with a 7-day
-/// all-access trial that starts on first launch.
+/// Premium unlock: $0.99 lifetime non-consumable. No subscription, no trial.
 @MainActor
 final class PremiumStore: ObservableObject {
     static let productID = "com.boringswitch.lifetime"
-    static let trialLengthDays = 7
 
     @Published private(set) var isPurchased: Bool
     @Published private(set) var product: Product?
@@ -17,9 +15,6 @@ final class PremiumStore: ObservableObject {
 
     init() {
         isPurchased = defaults.bool(forKey: "premiumPurchased")
-        if defaults.object(forKey: "firstLaunchDate") == nil {
-            defaults.set(Date(), forKey: "firstLaunchDate")
-        }
         updatesTask = Task { [weak self] in
             for await update in Transaction.updates {
                 if let transaction = try? update.payloadValue {
@@ -35,24 +30,10 @@ final class PremiumStore: ObservableObject {
 
     deinit { updatesTask?.cancel() }
 
-    // MARK: - Trial
+    /// True while premium content should be usable.
+    var isPremiumActive: Bool { isPurchased }
 
-    var trialEndDate: Date {
-        let first = defaults.object(forKey: "firstLaunchDate") as? Date ?? Date()
-        return Calendar.current.date(byAdding: .day, value: Self.trialLengthDays, to: first)!
-    }
-
-    var trialDaysRemaining: Int {
-        let days = Calendar.current.dateComponents([.day], from: Date(), to: trialEndDate).day ?? 0
-        return max(0, days + 1)
-    }
-
-    var isTrialActive: Bool { !isPurchased && Date() < trialEndDate }
-
-    /// True while premium content should be usable (purchased or in trial).
-    var isPremiumActive: Bool { isPurchased || isTrialActive }
-
-    var priceText: String { product?.displayPrice ?? "$1.99" }
+    var priceText: String { product?.displayPrice ?? "$0.99" }
 
     // MARK: - StoreKit
 

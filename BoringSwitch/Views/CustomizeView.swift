@@ -63,11 +63,7 @@ struct CustomizeView: View {
                             showPaywall = true
                             dismiss()
                         } label: {
-                            if premiumStore.isTrialActive {
-                                Text("Free trial: \(premiumStore.trialDaysRemaining) day\(premiumStore.trialDaysRemaining == 1 ? "" : "s") left · Unlock forever for \(premiumStore.priceText)")
-                            } else {
-                                Text("Unlock everything forever · \(premiumStore.priceText)")
-                            }
+                            Text("Unlock everything forever · \(premiumStore.priceText)")
                         }
                         .font(.subheadline.weight(.medium))
                     }

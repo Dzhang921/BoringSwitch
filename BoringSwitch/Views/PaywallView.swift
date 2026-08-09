@@ -25,16 +25,6 @@ struct PaywallView: View {
                 }
                 .padding(.horizontal, 8)
 
-                if premiumStore.isTrialActive {
-                    Text("Your free trial has \(premiumStore.trialDaysRemaining) day\(premiumStore.trialDaysRemaining == 1 ? "" : "s") left.")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                } else if !premiumStore.isPurchased {
-                    Text("Your free trial has ended.")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                }
-
                 Spacer()
 
                 if premiumStore.isPurchased {
